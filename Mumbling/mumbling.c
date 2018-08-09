@@ -10,34 +10,30 @@
 * See test cases for examples.
 */
 
-char* concat(const char *s1, const char *s2)
+float sum(int end)
 {
-    char *result = malloc(strlen(s1) + strlen(s2) + 1);
-    strcpy(result, s1);
-    strcat(result, s2);
-    return result;
+    return ((float)((1+end)/2)*end);
 }
 
 char* accumulate(const char *word, const int length)
 {
-    int i,a;
-    char *result;
+    int i,a, count=1;
+    char *result=malloc(sizeof(char)*(sum(length)+length-1));
     char sign, upper;
-    result="";
-    for(i=0;i<length;i++)
+    result[0]=toupper(word[0]);
+    for(i=1;i<length;i++)
     {
-        sign=word[i];
-        //upper=toupper(word[i]);
-        result=concat(result,&sign);
-        //printf("\n");
-       // printf("%s", result);
+        result[count]='-';
+        count++;
+        result[count]=toupper(word[i]);
+        count++;
         for(a=0;a<i;a++)
         {
-           result=concat(result,&sign);
+           result[count]= tolower(word[i]);
+           count++;
         }
-        result=concat(result,"-");
     }
-    printf("%s", result);
+    return result;
 }
 
 void test_cases()
@@ -51,7 +47,6 @@ void test_cases()
 
 int main(int argc, char *argv[])
 {
-	//test_cases();
-    accumulate("abcd", strlen("abcd"));
+	test_cases();
 	return 0;
 }
