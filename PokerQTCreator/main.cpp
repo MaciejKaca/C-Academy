@@ -317,13 +317,27 @@ private:
                 }
                 else
                 {
-                    cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
-                    cin >> action;
-                    while (action < FLOP || action > BET_OR_CALL)
+                    if(players[4].money >= 1)
                     {
-                        cout << "Invalid number pressed." << endl;
                         cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
                         cin >> action;
+                        while (action < FLOP || action > BET_OR_CALL)
+                        {
+                            cout << "Invalid number pressed." << endl;
+                            cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
+                            cin >> action;
+                        }
+                    }
+                    else
+                    {
+                        cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK";
+                        cin >> action;
+                        while (action < FLOP || action > CHECK)
+                        {
+                            cout << "Invalid number pressed." << endl;
+                            cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK";
+                            cin >> action;
+                        }
                     }
                 }
 
