@@ -690,10 +690,15 @@ private:
 
         qsort(winningHand, 5, sizeof(Card), compareCards);
 
-        for(int i=0; i<=5; i++)
+        for(int i=0; i<6; i++)
         {
+            for (int j = 0; j < 2; j++)
+                 winningHand[j + 3] = players[i].cards[j];
 
-            cout << "   The winning hand:" << endl;
+            if(i==winner)
+               cout << "   The winning hand of player nr: :" << i << endl;
+            else
+                cout << "Hand of player nr: " << i << endl;
             cout << "   ___   ___   ___   ___   ___" << endl;
             cout << "  | " << ranks[winningHand[0].rank] << " | | " << ranks[winningHand[1].rank] << " | | " << ranks[winningHand[2].rank] << " | | " << ranks[winningHand[3].rank] << " | | " << ranks[winningHand[4].rank] << " |" << endl;
             cout << "  | " << suits[winningHand[0].suit] << " | | " << suits[winningHand[1].suit] << " | | " << suits[winningHand[2].suit] << " | | " << suits[winningHand[3].suit] << " | | " << suits[winningHand[4].suit] << " |" << endl;
@@ -702,7 +707,6 @@ private:
         }
         usleep(3);
     }
-
     /* main gameplay function*/
     void startGame()
     {
@@ -732,7 +736,7 @@ private:
             }
 
             /* checking for game over*/
-            if (players[4].playing == 0)
+            if (players[4].playing <= 0)
             {
                 std::cout << "You are out of money, sorry." << std::endl;
                 std::cout << "Game over." << std::endl;
