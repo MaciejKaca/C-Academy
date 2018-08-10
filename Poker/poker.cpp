@@ -242,10 +242,11 @@ private:
 	Deck deck1;
 	int bind;
 	Card tableCards[5];
-	int pot, action, bet, rational, betOn, winner, maxPoints, roundWinner;
+	int pot, bet, rational, betOn, winner, maxPoints, roundWinner, action;
 	int handPoints[6];
 	int bestHand[6][3];
-
+	enum actions { FLOP=1, CHECK, BET_OR_CALL };
+	//actions action;
 	int playersLeft()
 	{
 		int count = 0;
@@ -307,7 +308,7 @@ private:
 				{
 					cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
 					cin >> action;
-					while (action != 1 && action != 3)
+					while (action != FLOP && action != BET_OR_CALL)
 					{
 						cout << "Invalid number pressed." << endl;
 						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
@@ -318,7 +319,7 @@ private:
 				{
 					cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
 					cin >> action;
-					while (action < 1 || action > 3)
+					while (action < FLOP || action > BET_OR_CALL)
 					{
 						cout << "Invalid number pressed." << endl;
 						cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
@@ -328,12 +329,12 @@ private:
 
 				cout << endl;
 
-				if (action == 1)
+				if (action == FLOP)
 				{
 					players[4].round = 0;
 					cout << "\t- " << players[4].name << " flops...\n";
 				}
-				else if (action == 2)
+				else if (action == CHECK)
 				{
 					cout << "\t+ " << players[4].name << " checks.\n";
 					continue;
@@ -388,7 +389,7 @@ private:
 					players[k % players_count].round = 0;
 					cout << "\t- " << players[k % players_count].name << " flops..." << endl;
 				}
-				else if (action == 1 && betOn == 0)
+				else if (action == FLOP && betOn == 0)
 				{
 					cout << "\t+ " << players[k % players_count].name << " checks." << endl;
 					continue;
@@ -427,14 +428,14 @@ private:
 					{
 						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
 						cin >> action;
-						while (action != 1 && action != 3)
+						while (action != FLOP && action != BET_OR_CALL)
 						{
 							cout << "Invalid number pressed." << endl;
 							cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
 							cin >> action;
 							cout << endl << endl;
 						}
-						if (action == 1)
+						if (action == FLOP)
 						{
 							cout << "\t- " << players[4].name << " flops...\n";
 							players[4].round = 0;
