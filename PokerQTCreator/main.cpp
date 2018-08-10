@@ -782,6 +782,7 @@ private:
                 std::cout << players[winner].name << " wins $" << pot << "\n\n";
                 i++;
                 printWinningHand(winner);
+                players[roundWinner].money += pot;
                 continue;
             }
 
