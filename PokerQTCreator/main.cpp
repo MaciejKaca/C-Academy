@@ -781,6 +781,7 @@ private:
                 winner = getWinner();
                 std::cout << players[winner].name << " wins $" << pot << "\n\n";
                 i++;
+                printWinningHand(winner);
                 continue;
             }
 
