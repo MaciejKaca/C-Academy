@@ -306,13 +306,27 @@ private:
             {
                 if (betOn)
                 {
-                    cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
-                    cin >> action;
-                    while (action != FLOP && action != BET_OR_CALL)
+                    if(players[4].money >= betOn)
                     {
-                        cout << "Invalid number pressed." << endl;
                         cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
                         cin >> action;
+                        while (action != FLOP && action != BET_OR_CALL)
+                        {
+                            cout << "Invalid number pressed." << endl;
+                            cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
+                            cin >> action;
+                        }
+                    }
+                    else
+                    {
+                        cout << "\t\t\t\t\tYOU ARE OUT OF MONEY | Your action: (1) FLOP";
+                        cin >> action;
+                        while (action != FLOP && action != BET_OR_CALL)
+                        {
+                            cout << "Invalid number pressed." << endl;
+                            cout << "\t\t\t\t\tOU ARE OUT OF MONEY | Your action: (1) FLOP";
+                            cin >> action;
+                        }
                     }
                 }
                 else
@@ -676,12 +690,16 @@ private:
 
         qsort(winningHand, 5, sizeof(Card), compareCards);
 
-        cout << "   The winning hand:" << endl;
-        cout << "   ___   ___   ___   ___   ___" << endl;
-        cout << "  | " << ranks[winningHand[0].rank] << " | | " << ranks[winningHand[1].rank] << " | | " << ranks[winningHand[2].rank] << " | | " << ranks[winningHand[3].rank] << " | | " << ranks[winningHand[4].rank] << " |" << endl;
-        cout << "  | " << suits[winningHand[0].suit] << " | | " << suits[winningHand[1].suit] << " | | " << suits[winningHand[2].suit] << " | | " << suits[winningHand[3].suit] << " | | " << suits[winningHand[4].suit] << " |" << endl;
-        cout << "  |___| |___| |___| |___| |___|" << endl;
-        cout << endl << endl;
+        for(int i=0; i<=5; i++)
+        {
+
+            cout << "   The winning hand:" << endl;
+            cout << "   ___   ___   ___   ___   ___" << endl;
+            cout << "  | " << ranks[winningHand[0].rank] << " | | " << ranks[winningHand[1].rank] << " | | " << ranks[winningHand[2].rank] << " | | " << ranks[winningHand[3].rank] << " | | " << ranks[winningHand[4].rank] << " |" << endl;
+            cout << "  | " << suits[winningHand[0].suit] << " | | " << suits[winningHand[1].suit] << " | | " << suits[winningHand[2].suit] << " | | " << suits[winningHand[3].suit] << " | | " << suits[winningHand[4].suit] << " |" << endl;
+            cout << "  |___| |___| |___| |___| |___|" << endl;
+            cout << endl << endl;
+        }
         usleep(3);
     }
 
