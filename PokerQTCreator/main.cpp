@@ -2,7 +2,7 @@
 /*                A simple Texas Hold'em Poker simulartion.                 */
 /*                Program runs fine, but gameplay still has some bugs.      */
 /****************************************************************************/
-
+#include <string.h>
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -68,10 +68,10 @@ public:
                 cards[i * ranks_count + j].rank = j;
             }
         }
-        suits[0] = "D";
-        suits[1] = "S";
-        suits[2] = "H";
-        suits[3] = "C";
+        suits[0] = "Diamonds";
+        suits[1] = "Spades";
+        suits[2] = "Hearts";
+        suits[3] = "Clubs";
 
         ranks[0] = "2";
         ranks[1] = "3";
@@ -81,11 +81,11 @@ public:
         ranks[5] = "7";
         ranks[6] = "8";
         ranks[7] = "9";
-        ranks[8] = "T";
-        ranks[9] = "J";
-        ranks[10] = "Q";
-        ranks[11] = "K";
-        ranks[12] = "A";
+        ranks[8] = "10";
+        ranks[9] = "Jack";
+        ranks[10] = "Queen";
+        ranks[11] = "King";
+        ranks[12] = "Ace";
     }
 
     void print()
@@ -200,15 +200,61 @@ public:
         using std::cout;
         using std::endl;
         using std::setw;
-
+        int table_lenght=0;
         cout << "------------------------------------------------------------------------------------------------------------------" << endl;
         cout << "  " << ((players[0].playing) ? (players[0].name) : "      ") << "         " << ((players[1].playing) ? (players[1].name) : "     ") << "           "
             << ((players[2].playing) ? (players[2].name) : "    ") << endl;
         cout << "   $" << setw(4) << ((players[0].playing) ? (players[0].money) : 0) << "         $" << setw(4) << ((players[1].playing) ? (players[1].money) : 0)
             << "           $" << setw(4) << ((players[2].playing) ? (players[2].money) : 0) << endl;
-        cout << "     _____________________________" << endl;
-        cout << "    / " << ((bind == 0) ? "@" : " ") << "            " << ((bind == 1) ? "@" : " ") << "            " << ((bind == 2) ? "@" : " ") << " \\" << endl;
-        cout << "   /  ___   ___   ___   ___   ___  \\" << endl;
+        cout << "     ";
+
+        for(int i=0;i<5;i++) //edge of the table
+        {
+            cout << "_____";
+            table_lenght+=6;
+            if(tableCards[i].rank>=0)
+            {
+                for(int j=1;
+                    j<(ranks[tableCards[i].rank].length() > suits[tableCards[i].suit].length() ?
+                       ranks[tableCards[i].rank].length() : suits[tableCards[i].suit].length());j++ )
+                {
+                    cout << "_";
+                    table_lenght++;
+                }
+            }
+        }
+         cout << "____";
+        cout << "\n";
+
+
+        cout << "    / " << ((bind == 0) ? "@" : " ") << "            " << ((bind == 1) ? "@" : " ") << "            " << ((bind == 2) ? "@" : " ");
+
+        for(int i=0;i<=table_lenght-30;i++)
+        {
+            cout << " ";
+        }
+        cout << "\\" << endl;
+
+
+        cout << "   /  ";
+        for(int i=0;i<5;i++) //top of the card
+        {
+            if(tableCards[i].rank>=0)
+            {
+                for(int j=1;
+                    j<(ranks[tableCards[i].rank].length() > suits[tableCards[i].suit].length() ?
+                       ranks[tableCards[i].rank].length() : suits[tableCards[i].suit].length());j++ )
+                {
+                    cout << "_";
+                }
+            }
+            cout << "___   ";
+
+        }
+        cout << "\\\n";
+
+
+
         cout << "   | | " << ((tableCards[0].rank) >= 0 ? ranks[tableCards[0].rank] : " ") << " | | " << ((tableCards[1].rank) >= 0 ? ranks[tableCards[1].rank] : " ") << " | | " << ((tableCards[2].rank) >= 0 ? ranks[tableCards[2].rank] : " ") << " | | "
             << ((tableCards[3].rank) >= 0 ? ranks[tableCards[3].rank] : " ") << " | | " << ((tableCards[4].rank) >= 0 ? ranks[tableCards[4].rank] : " ") << " | |" << endl;
         cout << "   | | " << ((tableCards[0].rank) >= 0 ? suits[tableCards[0].suit] : " ") << " | | " << ((tableCards[1].rank) >= 0 ? suits[tableCards[1].suit] : " ") << " | | " << ((tableCards[2].rank) >= 0 ? suits[tableCards[2].suit] : " ") << " | | "
@@ -216,9 +262,37 @@ public:
         cout << "   | |___| |___| |___| |___| |___| |" << endl;
         cout << "   |                               |" << endl;
         cout << "   |	       Pot = $" << setw(4) << pot << "         |" << endl;
-        cout << "   \\                               /" << endl;
-        cout << "    \\_" << ((bind == 5) ? "@" : "_") << "_____________" << ((bind == 4) ? "@" : "_") << "___________" << ((bind == 3) ? "@" : "_") << "_/" << endl;
-        cout << endl;
+
+
+        cout << "   \\ " << ((bind == 5) ? "@" : " ") << "             " << ((bind == 4) ? "@" : " ") << "           " << ((bind == 3) ? "@" : " ");
+
+
+        for(int i=0;i<=table_lenght-28;i++)
+        {
+            cout << " ";
+        }
+        cout << "/" << endl;
+
+
+        cout << "    \\";
+        for(int i=0;i<5;i++) //edge of the table
+        {
+            cout << "_____";
+            table_lenght+=6;
+            if(tableCards[i].rank>=0)
+            {
+                for(int j=1;
+                    j<(ranks[tableCards[i].rank].length() > suits[tableCards[i].suit].length() ?
+                       ranks[tableCards[i].rank].length() : suits[tableCards[i].suit].length());j++ )
+                {
+                    cout << "_";
+                    table_lenght++;
+                }
+            }
+        }
+         cout << "____";
+
+        cout << "/" << endl;
         cout << "  " << ((players[5].playing) ? (players[5].name) : "      ") << "          " << ((players[player_index].playing) ? (players[player_index].name) : "      ") << "         "
             << ((players[3].playing) ? (players[3].name) : "    ") << endl;
         cout << "   $" << setw(4) << ((players[5].playing) ? (players[5].money) : 0) << "          $" << setw(4) << ((players[player_index].playing) ? (players[player_index].money) : 0)
