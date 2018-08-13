@@ -195,15 +195,15 @@ public:
         tableCards[4] = deck1.hitme();
     }
 
-    void displayRank(int cardnr)
+    void displayCardRank(int card, Card cards[])
     {
         using std::cout;
-        cout << "| " << ((tableCards[cardnr].rank) >= 0 ? ranks[tableCards[cardnr].rank] : " "); // card RANK
-        if(tableCards[cardnr].rank>=0)
+        cout << "| " << ((cards[card].rank) >= 0 ? ranks[cards[card].rank] : " "); // card RANK
+        if(cards[card].rank>=0)
         {
             for(int i=0;i<
-                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
-                 0 : suits[tableCards[cardnr].suit].length()-ranks[tableCards[cardnr].rank].length());i++)
+                (ranks[cards[card].rank].length() > suits[cards[card].suit].length() ?
+                 0 : suits[cards[card].suit].length()-ranks[cards[card].rank].length());i++)
             {
                    cout << " ";
             }
@@ -211,20 +211,20 @@ public:
         cout << " |";
     }
 
-    void displayTopEdge(int cardnr)
+    void displayCardTopEdge(int card, Card cards[])
     {
         using std::cout;
         cout << "___";
-        if(tableCards[cardnr].rank>=0)
+        if(cards[card].rank>=0)
         {
             for(int i=0;i<
-                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
-                 ranks[tableCards[cardnr].rank].length()-1 : suits[tableCards[cardnr].suit].length()-1);i++)
+                (ranks[cards[card].rank].length() > suits[cards[card].suit].length() ?
+                 ranks[cards[card].rank].length()-1 : suits[cards[card].suit].length()-1);i++)
             {
                 cout << "_";
             }
         }
-        if(cardnr<=3)
+        if(card<=3)
         {
             cout << "  ";
         }
@@ -234,15 +234,15 @@ public:
         }
     }
 
-    void displaySuit(int cardnr)
+    void displayCardSuit(int card, Card cards[])
     {
         using std::cout;
-        cout << "| " << ((tableCards[cardnr].rank) >= 0 ? suits[tableCards[cardnr].suit] : " "); // card SUIT
-        if(tableCards[cardnr].rank>=0)
+        cout << "| " << ((cards[card].rank) >= 0 ? suits[cards[card].suit] : " "); // card SUIT
+        if(cards[card].rank>=0)
         {
             for(int i=0;i<
-                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
-                 ranks[tableCards[cardnr].rank].length()-suits[tableCards[cardnr].suit].length() : 0);i++)
+                (ranks[cards[card].rank].length() > suits[cards[card].suit].length() ?
+                 ranks[cards[card].rank].length()-suits[cards[card].suit].length() : 0);i++)
             {
                 cout << " ";
             }
@@ -261,72 +261,14 @@ public:
         return size;
     }
 
-    void displayBlankCard(int cardnr)
+    void displayCardottom(int card, Card cards[])
     {
         using std::cout;
         cout << "|__";
-        if(tableCards[cardnr].rank>=0)
-        {
-            for(int i=0;i<
-                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
-                 ranks[tableCards[cardnr].rank].length()-1 : suits[tableCards[cardnr].suit].length()-1);i++)
-            {
-                cout << "_";
-            }
-        }
-        cout << "_| ";
-    }
-
-    void displayPlayersCardTopEgde(int card)
-    {
-        using std::cout;
-        cout << "___";
-
+        if(cards[card].rank>=0)
         for(int i=0;i<
-        (ranks[players[player_index].cards[card].rank].length()>suits[players[player_index].cards[card].suit].length() ?
-         ranks[players[player_index].cards[card].rank].length() -1  : suits[players[player_index].cards[card].suit].length() - 1 )
-         ;i++)
-         {
-              cout << "_";
-         }
-        cout << "  ";
-    }
-
-    void displayPlayersCardRank(int card)
-    {
-        using std::cout;
-        cout << "| " << ranks[players[player_index].cards[card].rank]; // card RANK
-
-       for(int i=0;i<
-        (ranks[players[player_index].cards[card].rank].length()>suits[players[player_index].cards[card].suit].length() ?
-         0  : suits[players[player_index].cards[card].suit].length() - ranks[players[player_index].cards[card].rank].length()); i++ )
-         {
-                   cout << " ";
-         }
-        cout << " |";
-    }
-
-    void displayPlayersCardSuit(int card)
-    {
-        using std::cout;
-        cout << "| " << suits[players[player_index].cards[card].suit]; // card SUIT
-
-       for(int i=0;i<
-        (ranks[players[player_index].cards[card].rank].length()>suits[players[player_index].cards[card].suit].length() ?
-         ranks[players[player_index].cards[card].rank].length() - suits[players[player_index].cards[card].suit].length() : 0); i++ )
-         {
-                   cout << " ";
-         }
-        cout << " |";
-    }
-
-    void displayPlayersCardBlank(int card)
-    {
-        using std::cout;
-        cout << "|__";
-        for(int i=0;i<
-            (ranks[players[player_index].cards[card].rank].length()<suits[players[player_index].cards[card].suit].length() ?
-             suits[players[player_index].cards[card].suit].length()-1 : ranks[players[player_index].cards[card].rank].length()-1); i++ )
+            (ranks[cards[card].rank].length()<suits[cards[card].suit].length() ?
+             suits[cards[card].suit].length()-1 : ranks[cards[card].rank].length()-1); i++ )
         {
              cout << "_";
         }
@@ -377,7 +319,7 @@ public:
         cout << "   /  ";
         for(int i=0;i<5;i++) //top of the card
         {
-            displayTopEdge(i);
+            displayCardTopEdge(i, tableCards);
             cout << " ";
         }
         cout << "\\\n";
@@ -386,7 +328,7 @@ public:
         cout << "   | ";  //Display RANK
         for(int i=0;i<5;i++)
         {
-            displayRank(i);
+           displayCardRank(i, tableCards);
             cout << " ";
         }
         cout << "|" << endl;
@@ -394,15 +336,15 @@ public:
         cout << "   | "; //Display SUIT
         for(int i=0;i<5;i++)
         {
-            displaySuit(i);
+            displayCardSuit(i, tableCards);
             cout << " ";
         }
         cout << "|" << endl;
 
-        cout << "   | ";  //Display blank
+        cout << "   | ";  //Display BOTTOM
         for(int i=0;i<5;i++)
         {
-            displayBlankCard(i);
+            displayCardottom(i, tableCards);
         }
         cout << "|" << endl;
 
@@ -458,24 +400,25 @@ public:
         {
             cout << "   Your hand:" << endl;
             cout << "    ";
-            displayPlayersCardTopEgde(0);
+            displayCardTopEdge(0, players[player_index].cards);
             cout << "  ";
-            displayPlayersCardTopEgde(1);
-            cout << "\n";
-             cout << "   ";
-            displayPlayersCardRank(0);
-             cout << "  ";
-            displayPlayersCardRank(1);
+            displayCardTopEdge(1, players[player_index].cards);
             cout << "\n";
             cout << "   ";
-            displayPlayersCardSuit(0);
+            displayCardRank(0, players[player_index].cards);
             cout << "  ";
-            displayPlayersCardSuit(1);
+            displayCardRank(1, players[player_index].cards);
             cout << "\n";
             cout << "   ";
-            displayPlayersCardBlank(0);
+            displayCardSuit(0, players[player_index].cards);
+            cout << "  ";
+            displayCardSuit(1, players[player_index].cards);
+            cout << "\n";
+            cout << "   ";
+            displayCardottom(0 , players[player_index].cards);
             cout << " ";
-            displayPlayersCardBlank(1);
+            displayCardottom(1 , players[player_index].cards);
+
         }
 
         usleep(3);
@@ -941,13 +884,34 @@ private:
                  winningHand[j + 3] = players[i].cards[j];
 
             if(i==winner)
-               cout << "   The winning hand of player nr: :" << i << endl;
+               cout << "The winning hand of player: " << players[i].name << endl;
             else
-                cout << "Hand of player nr: " << i << endl;
-            cout << "   ___   ___   ___   ___   ___" << endl;
-            cout << "  | " << ranks[winningHand[0].rank] << " | | " << ranks[winningHand[1].rank] << " | | " << ranks[winningHand[2].rank] << " | | " << ranks[winningHand[3].rank] << " | | " << ranks[winningHand[4].rank] << " |" << endl;
-            cout << "  | " << suits[winningHand[0].suit] << " | | " << suits[winningHand[1].suit] << " | | " << suits[winningHand[2].suit] << " | | " << suits[winningHand[3].suit] << " | | " << suits[winningHand[4].suit] << " |" << endl;
-            cout << "  |___| |___| |___| |___| |___|" << endl;
+                cout << "Hand of player: " << players[i].name << endl;
+            cout << " ";
+            for(int i=0;i<5;i++)
+            {
+                displayCardTopEdge(i, winningHand);
+                cout << "  ";
+            }
+            cout << "\n";
+            for(int i=0;i<5;i++)
+            {
+                displayCardRank(i, winningHand);
+                cout << "  ";
+            }
+            cout << "\n";
+            for(int i=0;i<5;i++)
+            {
+                displayCardSuit(i, winningHand);
+                cout << "  ";
+            }
+            cout << "\n";
+            for(int i=0;i<5;i++)
+            {
+                displayCardottom(i, winningHand);
+                cout << " ";
+            }
+
             cout << endl << endl;
         }
         usleep(3);
