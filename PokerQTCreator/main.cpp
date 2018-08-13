@@ -250,6 +250,17 @@ public:
         cout << " |";
     }
 
+    int number_of_digits(int number)
+    {
+        int size=0;
+        while(number)
+        {
+            size++;
+            number /= 10;
+        }
+        return size;
+    }
+
     void displayBlankCard(int cardnr)
     {
         using std::cout;
@@ -262,6 +273,62 @@ public:
             {
                 cout << "_";
             }
+        }
+        cout << "_| ";
+    }
+
+    void displayPlayersCardTopEgde(int card)
+    {
+        using std::cout;
+        cout << "___";
+
+        for(int i=0;i<
+        (ranks[players[player_index].cards[card].rank].length()>suits[players[player_index].cards[card].suit].length() ?
+         ranks[players[player_index].cards[card].rank].length() -1  : suits[players[player_index].cards[card].suit].length() - 1 )
+         ;i++)
+         {
+              cout << "_";
+         }
+        cout << "  ";
+    }
+
+    void displayPlayersCardRank(int card)
+    {
+        using std::cout;
+        cout << "| " << ranks[players[player_index].cards[card].rank]; // card RANK
+
+       for(int i=0;i<
+        (ranks[players[player_index].cards[card].rank].length()>suits[players[player_index].cards[card].suit].length() ?
+         0  : suits[players[player_index].cards[card].suit].length() - ranks[players[player_index].cards[card].rank].length()); i++ )
+         {
+                   cout << " ";
+         }
+        cout << " |";
+    }
+
+    void displayPlayersCardSuit(int card)
+    {
+        using std::cout;
+        cout << "| " << suits[players[player_index].cards[card].suit]; // card SUIT
+
+       for(int i=0;i<
+        (ranks[players[player_index].cards[card].rank].length()>suits[players[player_index].cards[card].suit].length() ?
+         ranks[players[player_index].cards[card].rank].length() - suits[players[player_index].cards[card].suit].length() : 0); i++ )
+         {
+                   cout << " ";
+         }
+        cout << " |";
+    }
+
+    void displayPlayersCardBlank(int card)
+    {
+        using std::cout;
+        cout << "|__";
+        for(int i=0;i<
+            (ranks[players[player_index].cards[card].rank].length()<suits[players[player_index].cards[card].suit].length() ?
+             suits[players[player_index].cards[card].suit].length()-1 : ranks[players[player_index].cards[card].rank].length()-1); i++ )
+        {
+             cout << "_";
         }
         cout << "_| ";
     }
@@ -346,8 +413,12 @@ public:
         }
         cout << "|" << endl;
 
-        cout << "   |	       Pot = $" << setw(4) << pot << "         |" << endl;
-
+        cout << "   |	       Pot = $ " << pot;
+        for(int i=0;i<table_lenght- number_of_digits(pot) -18;i++)
+        {
+            cout << " ";
+        }
+        cout << "|" << endl;
 
         cout << "   \\ " << ((bind == 5) ? "@" : " ") << "             " << ((bind == 4) ? "@" : " ") << "           " << ((bind == 3) ? "@" : " ");
 
@@ -386,10 +457,25 @@ public:
         if (players[player_index].round)
         {
             cout << "   Your hand:" << endl;
-            cout << "    ___    ___" << endl;
-            cout << "   | " << ranks[players[player_index].cards[0].rank] << " |  | " << ranks[players[player_index].cards[1].rank] << " |" << endl;
-            cout << "   | " << suits[players[player_index].cards[0].suit] << " |  | " << suits[players[player_index].cards[1].suit] << " |" << endl;
-            cout << "   |___|  |___|" << endl << endl;
+            cout << "    ";
+            displayPlayersCardTopEgde(0);
+            cout << "  ";
+            displayPlayersCardTopEgde(1);
+            cout << "\n";
+             cout << "   ";
+            displayPlayersCardRank(0);
+             cout << "  ";
+            displayPlayersCardRank(1);
+            cout << "\n";
+            cout << "   ";
+            displayPlayersCardSuit(0);
+            cout << "  ";
+            displayPlayersCardSuit(1);
+            cout << "\n";
+            cout << "   ";
+            displayPlayersCardBlank(0);
+            cout << " ";
+            displayPlayersCardBlank(1);
         }
 
         usleep(3);
