@@ -195,6 +195,77 @@ public:
         tableCards[4] = deck1.hitme();
     }
 
+    void displayRank(int cardnr)
+    {
+        using std::cout;
+        cout << "| " << ((tableCards[cardnr].rank) >= 0 ? ranks[tableCards[cardnr].rank] : " "); // card RANK
+        if(tableCards[cardnr].rank>=0)
+        {
+            for(int i=0;i<
+                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
+                 0 : suits[tableCards[cardnr].suit].length()-ranks[tableCards[cardnr].rank].length());i++)
+            {
+                   cout << " ";
+            }
+        }
+        cout << " |";
+    }
+
+    void displayTopEdge(int cardnr)
+    {
+        using std::cout;
+        cout << "___";
+        if(tableCards[cardnr].rank>=0)
+        {
+            for(int i=0;i<
+                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
+                 ranks[tableCards[cardnr].rank].length()-1 : suits[tableCards[cardnr].suit].length()-1);i++)
+            {
+                cout << "_";
+            }
+        }
+        if(cardnr<=3)
+        {
+            cout << "  ";
+        }
+        else
+        {
+            cout << " ";
+        }
+    }
+
+    void displaySuit(int cardnr)
+    {
+        using std::cout;
+        cout << "| " << ((tableCards[cardnr].rank) >= 0 ? suits[tableCards[cardnr].suit] : " "); // card SUIT
+        if(tableCards[cardnr].rank>=0)
+        {
+            for(int i=0;i<
+                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
+                 ranks[tableCards[cardnr].rank].length()-suits[tableCards[cardnr].suit].length() : 0);i++)
+            {
+                cout << " ";
+            }
+        }
+        cout << " |";
+    }
+
+    void displayBlankCard(int cardnr)
+    {
+        using std::cout;
+        cout << "|__";
+        if(tableCards[cardnr].rank>=0)
+        {
+            for(int i=0;i<
+                (ranks[tableCards[cardnr].rank].length() > suits[tableCards[cardnr].suit].length() ?
+                 ranks[tableCards[cardnr].rank].length()-1 : suits[tableCards[cardnr].suit].length()-1);i++)
+            {
+                cout << "_";
+            }
+        }
+        cout << "_| ";
+    }
+
     void printTable()
     {
         using std::cout;
@@ -239,28 +310,42 @@ public:
         cout << "   /  ";
         for(int i=0;i<5;i++) //top of the card
         {
-            if(tableCards[i].rank>=0)
-            {
-                for(int j=1;
-                    j<(ranks[tableCards[i].rank].length() > suits[tableCards[i].suit].length() ?
-                       ranks[tableCards[i].rank].length() : suits[tableCards[i].suit].length());j++ )
-                {
-                    cout << "_";
-                }
-            }
-            cout << "___   ";
-
+            displayTopEdge(i);
+            cout << " ";
         }
         cout << "\\\n";
 
 
+        cout << "   | ";  //Display RANK
+        for(int i=0;i<5;i++)
+        {
+            displayRank(i);
+            cout << " ";
+        }
+        cout << "|" << endl;
 
-        cout << "   | | " << ((tableCards[0].rank) >= 0 ? ranks[tableCards[0].rank] : " ") << " | | " << ((tableCards[1].rank) >= 0 ? ranks[tableCards[1].rank] : " ") << " | | " << ((tableCards[2].rank) >= 0 ? ranks[tableCards[2].rank] : " ") << " | | "
-            << ((tableCards[3].rank) >= 0 ? ranks[tableCards[3].rank] : " ") << " | | " << ((tableCards[4].rank) >= 0 ? ranks[tableCards[4].rank] : " ") << " | |" << endl;
-        cout << "   | | " << ((tableCards[0].rank) >= 0 ? suits[tableCards[0].suit] : " ") << " | | " << ((tableCards[1].rank) >= 0 ? suits[tableCards[1].suit] : " ") << " | | " << ((tableCards[2].rank) >= 0 ? suits[tableCards[2].suit] : " ") << " | | "
-            << ((tableCards[3].rank) >= 0 ? suits[tableCards[3].suit] : " ") << " | | " << ((tableCards[4].rank) >= 0 ? suits[tableCards[4].suit] : " ") << " | |" << endl;
-        cout << "   | |___| |___| |___| |___| |___| |" << endl;
-        cout << "   |                               |" << endl;
+        cout << "   | "; //Display SUIT
+        for(int i=0;i<5;i++)
+        {
+            displaySuit(i);
+            cout << " ";
+        }
+        cout << "|" << endl;
+
+        cout << "   | ";  //Display blank
+        for(int i=0;i<5;i++)
+        {
+            displayBlankCard(i);
+        }
+        cout << "|" << endl;
+
+        cout << "   |";
+        for(int i=0;i<=table_lenght;i++)
+        {
+            cout << " ";
+        }
+        cout << "|" << endl;
+
         cout << "   |	       Pot = $" << setw(4) << pot << "         |" << endl;
 
 
