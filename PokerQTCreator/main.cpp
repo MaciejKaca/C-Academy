@@ -420,7 +420,7 @@ public:
             displayCardottom(1 , players[player_index].cards);
 
         }
-
+        cout << "\n";
         usleep(3);
     }
 
@@ -428,13 +428,12 @@ private:
     static const int players_count = 6;
     Player players[players_count];
     Deck deck1;
-    int bind;
+    int bind=0;
     Card tableCards[5];
     int pot, bet, rational, betOn, winner, maxPoints, roundWinner, action;
     int handPoints[6];
     int bestHand[6][3];
-    enum actions { FLOP=1, CHECK, BET_OR_CALL };
-    //actions action;
+    enum actions { FLOP=1, CHECK, BET_OR_CALL, RAISE };
     int playersLeft()
     {
         int count = 0;
@@ -496,12 +495,12 @@ private:
                 {
                     if(players[player_index].money >= betOn)
                     {
-                        cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
+                        cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL (4) RAISE";
                         cin >> action;
-                        while (action != FLOP && action != BET_OR_CALL)
+                        while (action != FLOP && action != BET_OR_CALL && action != RAISE)
                         {
                             cout << "Invalid number pressed." << endl;
-                            cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
+                            cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL (4) RAISE";
                             cin >> action;
                         }
                     }
@@ -555,7 +554,7 @@ private:
                     cout << "\t+ " << players[player_index].name << " checks.\n";
                     continue;
                 }
-                else
+                else if (action == BET_OR_CALL )
                 {
                     if (betOn)
                     {
@@ -582,6 +581,22 @@ private:
 
                         cout << "\t+ " << players[player_index].name << " bets " << bet << "$\n";
                     }
+                }
+                else
+                {
+                    int raise;
+                    cout << "How much do you want to rise: ";
+                    cin >> raise;
+                    while (raise+betOn > players[player_index].money || raise < 1)
+                    {
+                        cout << "Invalid number to raise." << endl;
+                        cout << "How much do you want to raise: ";
+                        cin >> raise;
+                        cout << endl << endl;
+                    }
+                    players[player_index].money -= raise+betOn;
+                    pot+= raise+betOn;
+                    betOn+=raise;
                 }
             }
             /* computers actions */
@@ -953,6 +968,11 @@ private:
             }
 
             bind = i % players_count;
+
+            while(players[bind].playing != true)
+            {
+              bind = ++i % players_count;
+            }
 
             /* paying bind */
             pot = 20;
