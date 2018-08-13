@@ -629,10 +629,23 @@ private:
                 {
                     if (betOn)
                     {
-                        pot += betOn;
-                        players[k % players_count].money -= betOn;
-                        cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
-                        players[k % players_count].goodToGo = 1;
+                        int decision= rand() % 2;
+                        if(decision==0)
+                        {
+                            pot += betOn;
+                            players[k % players_count].money -= betOn;
+                            cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
+                            players[k % players_count].goodToGo = 1;
+                        }
+                        else
+                        {
+                            int raise=(rand() % (players[k % players_count].money-betOn / 3) );
+                            betOn+=raise;
+                            pot += betOn;
+                            cout << "\t++ " << players[k % players_count].name << " raises: "<< raise << " to bet " << betOn << "!" << endl;
+                            players[k % players_count].money -= betOn;
+                            players[k % players_count].goodToGo = 1;
+                        }
                     }
                     else
                     {
