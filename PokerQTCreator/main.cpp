@@ -8,6 +8,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <math.h>
 #ifdef __linux__
 #include <unistd.h>
 #elif _WIN32
@@ -144,8 +145,12 @@ public:
 class PokerGame
 {
 public:
+    int players_count;
+    Player *players;
     void start(const std::string &name)
     {
+        players_count=8;
+        players =(Player*)(malloc(players_count*sizeof(Player)));
         for (int i = 0; i < players_count; i++)
         {
             players[i].money = 1000;
@@ -158,6 +163,9 @@ public:
         players[3].name = "Edyta";
         players[player_index].name = name;
         players[5].name = "Kamil";
+        players[6].name = "Patryk";
+        players[7].name = "Mariusz";
+
 
         startGame();
     }
@@ -275,6 +283,49 @@ public:
         cout << "_| ";
     }
 
+    void displayPlayersOnTheTopOfTheTable()
+    {
+        using std::cout;
+        using std::setw;
+        int halfOfThePlayers= ceil(float(players_count)/2);
+        cout << "  ";
+        for(int i=0;i<halfOfThePlayers;i++)
+        {
+                cout << ((players[i].playing) ? (players[i].name) : "      ") << "         ";
+        }
+        cout << "\n";
+
+
+        cout << "   ";
+        for(int i=0;i<halfOfThePlayers;i++)
+        {
+            cout << "$" << setw(4) << ((players[i].playing) ? (players[i].money) : 0) << "         ";
+        }
+        cout << "\n";
+
+    }
+
+    void displayPlayersOnTheBottomOfTheTable()
+    {
+        using std::cout;
+        using std::setw;
+        int numberOfThePlayersOnTheTop = ceil(float(players_count)/2);
+        cout << "  ";
+        for(int i=players_count-1;i>=numberOfThePlayersOnTheTop;i--)
+        {
+                cout << ((players[i].playing) ? (players[i].name) : "      ") << "         ";
+        }
+        cout << "\n";
+
+
+        cout << "   ";
+        for(int i=players_count-1;i>=numberOfThePlayersOnTheTop;i--)
+        {
+            cout << "$" << setw(4) << ((players[i].playing) ? (players[i].money) : 0) << "         ";
+        }
+        cout << "\n";
+    }
+
     void printTable()
     {
         using std::cout;
@@ -282,12 +333,13 @@ public:
         using std::setw;
         int table_lenght=0;
         cout << "------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << "  " << ((players[0].playing) ? (players[0].name) : "      ") << "         " << ((players[1].playing) ? (players[1].name) : "     ") << "           "
-            << ((players[2].playing) ? (players[2].name) : "    ") << endl;
-        cout << "   $" << setw(4) << ((players[0].playing) ? (players[0].money) : 0) << "         $" << setw(4) << ((players[1].playing) ? (players[1].money) : 0)
-            << "           $" << setw(4) << ((players[2].playing) ? (players[2].money) : 0) << endl;
-        cout << "     ";
+        displayPlayersOnTheTopOfTheTable();
+        //cout << "  " << ((players[0].playing) ? (players[0].name) : "      ") << "         " << ((players[1].playing) ? (players[1].name) : "     ") << "           "
+        //    << ((players[2].playing) ? (players[2].name) : "    ") << endl;
+        //cout << "   $" << setw(4) << ((players[0].playing) ? (players[0].money) : 0) << "         $" << setw(4) << ((players[1].playing) ? (players[1].money) : 0)
+        //    << "           $" << setw(4) << ((players[2].playing) ? (players[2].money) : 0) << endl;
 
+        cout << "     ";
         for(int i=0;i<5;i++) //edge of the table
         {
             cout << "_____";
@@ -391,11 +443,14 @@ public:
          cout << "____";
 
         cout << "/" << endl;
-        cout << "  " << ((players[5].playing) ? (players[5].name) : "      ") << "          " << ((players[player_index].playing) ? (players[player_index].name) : "      ") << "         "
-            << ((players[3].playing) ? (players[3].name) : "    ") << endl;
-        cout << "   $" << setw(4) << ((players[5].playing) ? (players[5].money) : 0) << "          $" << setw(4) << ((players[player_index].playing) ? (players[player_index].money) : 0)
-            << "         $" << setw(4) << ((players[3].playing) ? (players[3].money) : 0) << endl;
-        cout << endl;
+
+        displayPlayersOnTheBottomOfTheTable();
+
+        //cout << "  " << ((players[5].playing) ? (players[5].name) : "      ") << "          " << ((players[player_index].playing) ? (players[player_index].name) : "      ") << "         "
+        //    << ((players[3].playing) ? (players[3].name) : "    ") << endl;
+        //cout << "   $" << setw(4) << ((players[5].playing) ? (players[5].money) : 0) << "          $" << setw(4) << ((players[player_index].playing) ? (players[player_index].money) : 0)
+        //    << "         $" << setw(4) << ((players[3].playing) ? (players[3].money) : 0) << endl;
+        //cout << endl;
         if (players[player_index].round)
         {
             cout << "   Your hand:" << endl;
@@ -425,8 +480,6 @@ public:
     }
 
 private:
-    static const int players_count = 6;
-    Player players[players_count];
     Deck deck1;
     int bind=0;
     Card tableCards[5];
@@ -639,7 +692,7 @@ private:
                         }
                         else
                         {
-                            int raise=(rand() % (players[k % players_count].money-betOn / 3) );
+                            int raise=(rand() % ((players[k % players_count].money-betOn) / 3) );
                             betOn+=raise;
                             pot += betOn;
                             cout << "\t++ " << players[k % players_count].name << " raises: "<< raise << " to bet " << betOn << "!" << endl;
@@ -1024,7 +1077,7 @@ private:
                 std::cout << players[winner].name << " wins $" << pot << "\n\n";
                 i++;
                 printWinningHand(winner);
-                players[roundWinner].money += pot;
+                players[winner].money += pot;
                 continue;
             }
 
