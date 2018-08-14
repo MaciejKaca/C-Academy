@@ -149,14 +149,13 @@ public:
     Player *players;
     void start(const std::string &name)
     {
-        players_count=8;
+        players_count=10;
         players =(Player*)(malloc(players_count*sizeof(Player)));
         for (int i = 0; i < players_count; i++)
         {
             players[i].money = 1000;
             players[i].playing = true;
         }
-
         players[0].name = "Wojciech";
         players[1].name = "Tristan";
         players[2].name = "Michal";
@@ -165,7 +164,8 @@ public:
         players[5].name = "Kamil";
         players[6].name = "Patryk";
         players[7].name = "Mariusz";
-
+        players[8].name = "Bartosz";
+        players[9].name = "Kamil";
 
         startGame();
     }
@@ -288,18 +288,26 @@ public:
         using std::cout;
         using std::setw;
         int halfOfThePlayers= ceil(float(players_count)/2);
-        cout << "  ";
+
+        cout << "  "; //Name
         for(int i=0;i<halfOfThePlayers;i++)
         {
-                cout << ((players[i].playing) ? (players[i].name) : "      ") << "         ";
+                cout << ((players[i].playing) ? (players[i].name) : "      ")  << "         ";
         }
         cout << "\n";
 
 
-        cout << "   ";
+        cout << "   "; //Money
         for(int i=0;i<halfOfThePlayers;i++)
         {
             cout << "$" << setw(4) << ((players[i].playing) ? (players[i].money) : 0) << "         ";
+        }
+        cout << "\n";
+
+        cout << "   "; //Token
+        for(int i=0;i<halfOfThePlayers;i++)
+        {
+            cout << ((bind == i) ? "@" : " ") << setw(15);
         }
         cout << "\n";
 
@@ -310,7 +318,15 @@ public:
         using std::cout;
         using std::setw;
         int numberOfThePlayersOnTheTop = ceil(float(players_count)/2);
-        cout << "  ";
+
+        cout << "   "; //Token
+        for(int i=players_count-1;i>=numberOfThePlayersOnTheTop;i--)
+        {
+            cout << ((bind == i) ? "@" : " ") << setw(15);
+        }
+        cout << "\n";
+
+        cout << "  "; //Name
         for(int i=players_count-1;i>=numberOfThePlayersOnTheTop;i--)
         {
                 cout << ((players[i].playing) ? (players[i].name) : "      ") << "         ";
@@ -318,13 +334,51 @@ public:
         cout << "\n";
 
 
-        cout << "   ";
+        cout << "   ";  //Money
         for(int i=players_count-1;i>=numberOfThePlayersOnTheTop;i--)
         {
             cout << "$" << setw(4) << ((players[i].playing) ? (players[i].money) : 0) << "         ";
         }
         cout << "\n";
+
     }
+
+    void displayCards(int how_many, Card cards[])
+    {
+        using std::cout;
+
+        cout << "      ";
+        for(int i=0;i<how_many;i++) //top of the card
+        {
+            displayCardTopEdge(i, cards);
+            cout << " ";
+        }
+        cout << "\n";
+
+        cout << "     ";  //Display RANK
+        for(int i=0;i<how_many;i++)
+        {
+           displayCardRank(i, cards);
+            cout << " ";
+        }
+        cout << "\n";
+
+        cout << "     "; //Display SUIT
+        for(int i=0;i<how_many;i++)
+        {
+            displayCardSuit(i, cards);
+            cout << " ";
+        }
+        cout << "\n";
+
+        cout << "     ";  //Display BOTTOM
+        for(int i=0;i<how_many;i++)
+        {
+            displayCardottom(i, cards);
+        }
+        cout << "\n";
+    }
+
 
     void printTable()
     {
@@ -334,10 +388,6 @@ public:
         int table_lenght=0;
         cout << "------------------------------------------------------------------------------------------------------------------" << endl;
         displayPlayersOnTheTopOfTheTable();
-        //cout << "  " << ((players[0].playing) ? (players[0].name) : "      ") << "         " << ((players[1].playing) ? (players[1].name) : "     ") << "           "
-        //    << ((players[2].playing) ? (players[2].name) : "    ") << endl;
-        //cout << "   $" << setw(4) << ((players[0].playing) ? (players[0].money) : 0) << "         $" << setw(4) << ((players[1].playing) ? (players[1].money) : 0)
-        //    << "           $" << setw(4) << ((players[2].playing) ? (players[2].money) : 0) << endl;
 
         cout << "     ";
         for(int i=0;i<5;i++) //edge of the table
@@ -355,69 +405,47 @@ public:
                 }
             }
         }
-         cout << "____";
+        cout << "____";
         cout << "\n";
-
-
-        cout << "    / " << ((bind == 0) ? "@" : " ") << "            " << ((bind == 1) ? "@" : " ") << "            " << ((bind == 2) ? "@" : " ");
-
-        for(int i=0;i<=table_lenght-30;i++)
+        cout << "    /";
+        for(int i=0;i<table_lenght-1;i++) //Display part of the table
         {
             cout << " ";
         }
         cout << "\\" << endl;
 
-
-        cout << "   /  ";
-        for(int i=0;i<5;i++) //top of the card
+        cout << "   /";
+        for(int i=0;i<=table_lenght;i++) //Display part of the table
         {
-            displayCardTopEdge(i, tableCards);
             cout << " ";
         }
-        cout << "\\\n";
-
-
-        cout << "   | ";  //Display RANK
-        for(int i=0;i<5;i++)
-        {
-           displayCardRank(i, tableCards);
-            cout << " ";
-        }
-        cout << "|" << endl;
-
-        cout << "   | "; //Display SUIT
-        for(int i=0;i<5;i++)
-        {
-            displayCardSuit(i, tableCards);
-            cout << " ";
-        }
-        cout << "|" << endl;
-
-        cout << "   | ";  //Display BOTTOM
-        for(int i=0;i<5;i++)
-        {
-            displayCardottom(i, tableCards);
-        }
-        cout << "|" << endl;
+        cout << "\\" << endl;
 
         cout << "   |";
-        for(int i=0;i<=table_lenght;i++)
+        for(int i=0;i<=table_lenght;i++) //Display part of the table
         {
             cout << " ";
         }
         cout << "|" << endl;
 
-        cout << "   |	       Pot = $ " << pot;
+        displayCards(5, tableCards);  //Display Cards
+
+        cout << "     ";
+        for(int i=0;i<=table_lenght;i++) //Display part of the table
+        {
+            cout << " ";
+        }
+        cout << "\n";
+
+        cout << "   |	       Pot = $ " << pot;  //DisplayPot
         for(int i=0;i<table_lenght- number_of_digits(pot) -18;i++)
         {
             cout << " ";
         }
         cout << "|" << endl;
 
-        cout << "   \\ " << ((bind == 5) ? "@" : " ") << "             " << ((bind == 4) ? "@" : " ") << "           " << ((bind == 3) ? "@" : " ");
-
-
-        for(int i=0;i<=table_lenght-28;i++)
+        cout << "   \\";
+        for(int i=0;i<=table_lenght;i++)
         {
             cout << " ";
         }
@@ -446,38 +474,18 @@ public:
 
         displayPlayersOnTheBottomOfTheTable();
 
-        //cout << "  " << ((players[5].playing) ? (players[5].name) : "      ") << "          " << ((players[player_index].playing) ? (players[player_index].name) : "      ") << "         "
-        //    << ((players[3].playing) ? (players[3].name) : "    ") << endl;
-        //cout << "   $" << setw(4) << ((players[5].playing) ? (players[5].money) : 0) << "          $" << setw(4) << ((players[player_index].playing) ? (players[player_index].money) : 0)
-        //    << "         $" << setw(4) << ((players[3].playing) ? (players[3].money) : 0) << endl;
-        //cout << endl;
+
         if (players[player_index].round)
         {
-            cout << "   Your hand:" << endl;
-            cout << "    ";
-            displayCardTopEdge(0, players[player_index].cards);
-            cout << "  ";
-            displayCardTopEdge(1, players[player_index].cards);
-            cout << "\n";
-            cout << "   ";
-            displayCardRank(0, players[player_index].cards);
-            cout << "  ";
-            displayCardRank(1, players[player_index].cards);
-            cout << "\n";
-            cout << "   ";
-            displayCardSuit(0, players[player_index].cards);
-            cout << "  ";
-            displayCardSuit(1, players[player_index].cards);
-            cout << "\n";
-            cout << "   ";
-            displayCardottom(0 , players[player_index].cards);
-            cout << " ";
-            displayCardottom(1 , players[player_index].cards);
+            cout << "\n   Your hand:" << endl;
+
+            displayCards(2, players[player_index].cards);
 
         }
         cout << "\n";
         usleep(3);
     }
+
 
 private:
     Deck deck1;
@@ -951,6 +959,7 @@ private:
         using std::endl;
 
         Card winningHand[5];
+
         for (int i = 0; i < 3; i++)
             winningHand[i] = tableCards[bestHand[winner][i]];
 
@@ -959,40 +968,19 @@ private:
 
         qsort(winningHand, 5, sizeof(Card), compareCards);
 
-        for(int i=0; i<6; i++)
+        for(int playernr=0; playernr<players_count; playernr++)
         {
-            for (int j = 0; j < 2; j++)
-                 winningHand[j + 3] = players[i].cards[j];
 
-            if(i==winner)
-               cout << "The winning hand of player: " << players[i].name << endl;
+            if(playernr==winner)
+            {
+               cout << "The winning hand of player: " << players[playernr].name << endl;
+               displayCards(5,winningHand);
+            }
             else
-                cout << "Hand of player: " << players[i].name << endl;
-            cout << " ";
-            for(int i=0;i<5;i++)
             {
-                displayCardTopEdge(i, winningHand);
-                cout << "  ";
+                cout << "Hand of player: " << players[playernr].name << endl;
+                displayCards(2, players[playernr].cards);
             }
-            cout << "\n";
-            for(int i=0;i<5;i++)
-            {
-                displayCardRank(i, winningHand);
-                cout << "  ";
-            }
-            cout << "\n";
-            for(int i=0;i<5;i++)
-            {
-                displayCardSuit(i, winningHand);
-                cout << "  ";
-            }
-            cout << "\n";
-            for(int i=0;i<5;i++)
-            {
-                displayCardottom(i, winningHand);
-                cout << " ";
-            }
-
             cout << endl << endl;
         }
         usleep(3);
